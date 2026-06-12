@@ -118,6 +118,30 @@ footer{padding:38px 7%;text-align:center;background:rgba(255,214,234,.86);font-w
 @media(max-width:850px){
   nav{display:none}.menu{display:block}.toolbar{grid-template-columns:1fr}.bottom-nav{display:flex}h1{font-size:43px}.hero-card{padding:42px 22px}section{padding:54px 5%}
 }
+
+/* ===== PREMIUM UPGRADE FEATURES ===== */
+.spin-wrap{display:grid;grid-template-columns:repeat(auto-fit,minmax(280px,1fr));gap:22px;align-items:center}
+.wheel{width:260px;height:260px;border-radius:50%;margin:auto;background:conic-gradient(#ff8ec1 0 60deg,#ffe1f0 60deg 120deg,#eadcff 120deg 180deg,#ffb7d8 180deg 240deg,#fff0c7 240deg 300deg,#ff9fc8 300deg 360deg);display:grid;place-items:center;border:10px solid #fff;box-shadow:var(--shadow);transition:transform 4s cubic-bezier(.16,.84,.3,1);position:relative}
+.wheel::after{content:"🎀";font-size:52px;background:#fff;border-radius:50%;width:95px;height:95px;display:grid;place-items:center;box-shadow:0 10px 25px #0001}
+.pointer{width:0;height:0;border-left:18px solid transparent;border-right:18px solid transparent;border-bottom:35px solid #e94f91;margin:auto;margin-bottom:-10px;position:relative;z-index:2}
+.insta-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(160px,1fr));gap:14px}
+.insta-card{background:#fff1f8;border-radius:22px;overflow:hidden;box-shadow:var(--shadow);font-weight:900}
+.insta-card img{width:100%;height:170px;object-fit:cover;display:block}
+.insta-card p{padding:12px}
+.tracker{display:grid;grid-template-columns:repeat(auto-fit,minmax(160px,1fr));gap:12px;margin-top:18px}
+.track-step{padding:18px;border-radius:20px;background:#fff1f8;text-align:center;font-weight:900;opacity:.45}
+.track-step.active{opacity:1;background:#ffd6ea;color:#b92f70;box-shadow:var(--shadow)}
+.love-note{position:fixed;left:18px;bottom:82px;z-index:65;background:#fff;border:1px solid #ffc1dd;border-radius:22px;padding:14px 18px;box-shadow:var(--shadow);font-weight:900;max-width:260px}
+.music-toggle{position:fixed;left:18px;bottom:18px;z-index:70}
+.quick-view-grid{display:grid;grid-template-columns:160px 1fr;gap:16px;text-align:left;align-items:center}
+.quick-view-grid img{width:160px;height:160px;object-fit:cover;border-radius:22px}
+.recent-row{display:flex;gap:14px;overflow-x:auto;padding-bottom:8px}
+.recent-card{min-width:150px;background:#fff1f8;border-radius:18px;padding:10px;font-weight:900}
+.recent-card img{width:100%;height:100px;object-fit:cover;border-radius:14px}
+.customer-photos{display:grid;grid-template-columns:repeat(auto-fit,minmax(170px,1fr));gap:14px}
+.customer-photos img{width:100%;height:180px;object-fit:cover;border-radius:22px;box-shadow:var(--shadow)}
+@media(max-width:650px){.quick-view-grid{grid-template-columns:1fr;text-align:center}.quick-view-grid img{margin:auto}.love-note{display:none}}
+
 </style>
 </head>
 <body>
@@ -128,13 +152,16 @@ footer{padding:38px 7%;text-align:center;background:rgba(255,214,234,.86);font-w
 <header>
   <div class="logo">Pookie Crochet</div>
   <nav>
-    <a href="#shop">Shop</a><a href="#custom">Custom</a><a href="#gallery">Gallery</a><a href="#reviews">Reviews</a><a href="#admin">Admin</a>
+    <a href="#shop">Shop</a><a href="#custom">Custom</a><a href="#spin">Coupon</a><a href="#tracker">Track</a><a href="#reviews">Reviews</a><a href="#admin">Admin</a>
   </nav>
   <div class="menu" onclick="toggleMenu()">☰</div>
 </header>
-<div class="mobile-nav" id="mobileNav"><a href="#shop">Shop</a><a href="#custom">Custom</a><a href="#gallery">Gallery</a><a href="#reviews">Reviews</a><a href="#admin">Admin</a></div>
+<div class="mobile-nav" id="mobileNav"><a href="#shop">Shop</a><a href="#custom">Custom</a><a href="#spin">Coupon</a><a href="#tracker">Track</a><a href="#reviews">Reviews</a><a href="#admin">Admin</a></div>
 <a class="whatsapp" href="https://wa.me/917060105010" target="_blank">WhatsApp 💬</a>
-<div class="bottom-nav"><a href="#shop">🛍️<br>Shop</a><a href="#custom">🎀<br>Custom</a><a href="#gallery">📸<br>Gallery</a><a href="#cart">🛒<br>Cart</a></div>
+<div class="bottom-nav"><a href="#shop">🛍️<br>Shop</a><a href="#custom">🎀<br>Custom</a><a href="#spin">🎡<br>Coupon</a><a href="#cart">🛒<br>Cart</a></div>
+<div class="love-note" id="loveNote">💗 Every stitch is made with love.</div>
+<button class="btn ghost music-toggle" onclick="toggleMusic()">🎵 Music</button>
+<audio id="bgMusic" loop></audio>
 
 <main>
 <section class="hero">
@@ -220,6 +247,64 @@ footer{padding:38px 7%;text-align:center;background:rgba(255,214,234,.86);font-w
   <div class="review-grid" id="reviewsBox"></div>
 </section>
 
+
+<section id="spin" class="glass">
+  <h2 class="title">Spin & Win Coupon 🎡</h2>
+  <div class="spin-wrap">
+    <div>
+      <div class="pointer"></div>
+      <div class="wheel" id="couponWheel"></div>
+    </div>
+    <div>
+      <h2>Win cute discounts before checkout!</h2>
+      <p style="font-weight:800;line-height:1.8;margin:14px 0">Spin once and copy the coupon into checkout. It makes the website interactive and fun.</p>
+      <button class="btn" onclick="spinWheel()">Spin Now</button>
+      <h3 style="margin-top:14px">Your Coupon: <span id="wheelCoupon">Not spun yet</span></h3>
+    </div>
+  </div>
+</section>
+
+<section id="tracker" class="glass">
+  <h2 class="title">Order Tracking 📦</h2>
+  <div class="form-grid">
+    <input id="trackInput" placeholder="Enter Order ID / Phone number">
+    <button class="btn" onclick="trackOrder()">Track Order</button>
+  </div>
+  <h3 id="trackResult" style="text-align:center;margin-top:10px">Enter your order ID to see status.</h3>
+  <div class="tracker">
+    <div class="track-step active" id="t1">Order Received</div>
+    <div class="track-step" id="t2">Crocheting</div>
+    <div class="track-step" id="t3">Packing</div>
+    <div class="track-step" id="t4">Shipped</div>
+    <div class="track-step" id="t5">Delivered</div>
+  </div>
+</section>
+
+<section id="instagram" class="glass">
+  <h2 class="title">Instagram / Reels Corner 📸</h2>
+  <p style="text-align:center;font-weight:800;margin-bottom:18px">Add Instagram photos, reels, packing videos and customer unboxing here.</p>
+  <div class="insta-grid">
+    <div class="insta-card"><img src="https://images.unsplash.com/photo-1618354691373-d851c5c3a990?auto=format&fit=crop&w=500&q=80"><p>🌸 New bouquet drop</p></div>
+    <div class="insta-card"><img src="https://images.unsplash.com/photo-1584992236310-6edddc08acff?auto=format&fit=crop&w=500&q=80"><p>🧶 Making process</p></div>
+    <div class="insta-card"><img src="https://images.unsplash.com/photo-1528825871115-3581a5387919?auto=format&fit=crop&w=500&q=80"><p>🎁 Packing order</p></div>
+    <div class="insta-card"><img src="https://images.unsplash.com/photo-1597848212624-a19eb35e2651?auto=format&fit=crop&w=500&q=80"><p>💗 Customer love</p></div>
+  </div>
+</section>
+
+<section id="recent" class="glass">
+  <h2 class="title">Recently Viewed 💖</h2>
+  <div class="recent-row" id="recentBox">View products to see them here.</div>
+</section>
+
+<section id="customerPhotos" class="glass">
+  <h2 class="title">Customer Photo Reviews 🧸</h2>
+  <div class="customer-photos">
+    <img src="https://images.unsplash.com/photo-1490750967868-88aa4486c946?auto=format&fit=crop&w=500&q=80">
+    <img src="https://images.unsplash.com/photo-1468327768560-75b778cbb551?auto=format&fit=crop&w=500&q=80">
+    <img src="https://images.unsplash.com/photo-1501004318641-b39e6451bec6?auto=format&fit=crop&w=500&q=80">
+  </div>
+</section>
+
 <section class="faq glass">
   <h2 class="title">FAQ</h2>
   <details open><summary>How to order?</summary><p>Add to cart and checkout through WhatsApp.</p></details>
@@ -250,6 +335,7 @@ footer{padding:38px 7%;text-align:center;background:rgba(255,214,234,.86);font-w
 </footer>
 
 <div class="popup" id="popup"><div class="popup-box"><h2 id="popTitle">Yayyy!</h2><p id="popupText"></p><br><button class="btn" onclick="closePopup()">Continue</button></div></div>
+<div class="popup" id="quickPopup"><div class="popup-box" id="quickBox"></div></div>
 <div class="lightbox" id="lightbox" onclick="this.style.display='none'"><img id="lightImg"></div>
 
 <script>
@@ -291,19 +377,21 @@ let reviews=JSON.parse(localStorage.getItem("reviews")||"null")||[
 window.addEventListener("load",()=>setTimeout(()=>loader.classList.add("hide"),700));
 
 function renderProducts(list=products){
+ currentRenderedProducts=list;
  products.innerHTML="";
  const box=document.getElementById("products");
  box.innerHTML=list.map((p,i)=>`
  <div class="card">
   <span class="badge">${p.stock>0? "Only "+p.stock+" left":"Out of Stock"}</span>
-  <button class="wishlist" onclick="wish(this)">♡</button>
-  <img src="${p.img}" onclick="openImg('${p.img}')">
+  <button class="wishlist" data-name="${p.name}" onclick="wish(this)">♡</button>
+  <img src="${p.img}" onclick="quickView(${i})">
   <h3>${p.name}</h3><p>${p.desc}</p>
   <div class="small">⭐⭐⭐⭐⭐ Best Seller</div>
   <div class="price">₹${p.price}<span class="old">₹${p.old||p.price+150}</span></div>
   <button class="btn" ${p.stock<=0?"disabled":""} onclick="addToCart('${p.name}',${p.price})">${p.stock<=0?"Sold Out":"Add to Cart"}</button>
  </div>`).join("");
  renderAdmin();
+ setTimeout(applyWishlistHearts,50);
 }
 function applyFilters(){
  let q=search.value.toLowerCase();
@@ -316,7 +404,13 @@ function applyFilters(){
 function setCat(cat,el){currentCat=cat;document.querySelectorAll(".chip").forEach(c=>c.classList.remove("active"));el.classList.add("active");applyFilters()}
 function addToCart(name,price){cart.push({name,price,qty:1});total+=price;updateCart();confetti();showPop("Added to Cart 🎉",name+" added successfully!")}
 function updateCart(){
- let discount=coupon.value.trim().toUpperCase()==="POOKIE10"?Math.round(total*0.1):0;
+ let code=coupon.value.trim().toUpperCase();
+ let discount=0;
+ if(code==="POOKIE10") discount=Math.round(total*0.1);
+ if(code==="CUTE15") discount=Math.round(total*0.15);
+ if(code==="YARN5") discount=Math.round(total*0.05);
+ if(code==="GIFT20") discount=Math.round(total*0.2);
+ if(code==="LUCKY12") discount=Math.round(total*0.12);
  let final=total-discount;
  cartItems.innerHTML=cart.length?cart.map((i,n)=>`<div class="cart-row"><span>🎀 ${i.name}</span><span>₹${i.price} <button onclick="removeItem(${n})">Remove</button></span></div>`).join(""):"No items added yet.";
  document.getElementById("total").innerText=final;
@@ -358,7 +452,16 @@ function addAdminProduct(){
 function renderAdmin(){adminList.innerHTML=products.map((p,i)=>`<div class="admin-item"><span>${p.name} - ₹${p.price}</span><button onclick="deleteProduct(${i})">Delete</button></div>`).join("")}
 function deleteProduct(i){products.splice(i,1);localStorage.setItem("products",JSON.stringify(products));renderProducts()}
 function resetProducts(){localStorage.removeItem("products");products=[...defaultProducts];renderProducts()}
-function wish(b){b.innerText=b.innerText==="♡"?"♥":"♡"}
+function wish(b){
+  const name=b.dataset.name;
+  if(!name){b.innerText=b.innerText==="♡"?"♥":"♡";return}
+  if(wishlist.includes(name)){
+    wishlist=wishlist.filter(x=>x!==name); b.innerText="♡";
+  }else{
+    wishlist.push(name); b.innerText="♥";
+  }
+  localStorage.setItem("wishlist",JSON.stringify(wishlist));
+}
 function openImg(src){lightImg.src=src;lightbox.style.display="flex"}
 function showPop(t,m){popTitle.innerText=t;popupText.innerText=m;popup.style.display="flex"}
 function closePopup(){popup.style.display="none"}
@@ -366,7 +469,107 @@ function toggleMenu(){mobileNav.style.display=mobileNav.style.display==="block"?
 function toggleDark(){document.body.classList.toggle("dark")}
 function confetti(){for(let i=0;i<45;i++){setTimeout(()=>{let s=document.createElement("span");s.className="sparkle";s.innerText=["🌸","💗","✨","🎀"][i%4];s.style.left=Math.random()*innerWidth+"px";s.style.top=Math.random()*innerHeight/2+"px";document.body.appendChild(s);setTimeout(()=>s.remove(),800)},i*15)}}
 document.addEventListener("mousemove",e=>{let s=document.createElement("span");s.className="sparkle";s.innerText="✨";s.style.left=e.clientX+"px";s.style.top=e.clientY+"px";document.body.appendChild(s);setTimeout(()=>s.remove(),750)});
-renderProducts();renderReviews();loadMoreGallery(36);updateEstimate();
+
+// ===== PREMIUM UPGRADE JS =====
+let currentRenderedProducts = products;
+let wishlist = JSON.parse(localStorage.getItem("wishlist") || "[]");
+let recentViewed = JSON.parse(localStorage.getItem("recentViewed") || "[]");
+
+const loveNotes = [
+  "💗 Every stitch is made with love.",
+  "🎀 Thank you for supporting handmade art.",
+  "🧶 Tiny yarn, big happiness.",
+  "🌸 Custom gifts made specially for you.",
+  "🦋 Soft, cute and pookie forever."
+];
+setInterval(()=>{ loveNote.innerText = loveNotes[Math.floor(Math.random()*loveNotes.length)] }, 3500);
+
+function quickView(i){
+  const p = currentRenderedProducts[i] || products[i];
+  if(!p) return;
+  addRecent(p);
+  quickBox.innerHTML = `
+    <h2 style="font-family:Pacifico;color:#e94f91;margin-bottom:15px">Product Details</h2>
+    <div class="quick-view-grid">
+      <img src="${p.img}">
+      <div>
+        <h2>${p.name}</h2>
+        <p style="font-weight:800;line-height:1.7">${p.desc}</p>
+        <h2 style="color:#d93c83">₹${p.price}</h2>
+        <p><b>Stock:</b> ${p.stock>0 ? p.stock+" left" : "Out of Stock"}</p>
+        <button class="btn" onclick="addToCart('${p.name}',${p.price});quickPopup.style.display='none'">Add to Cart</button>
+        <button class="btn ghost" onclick="openImg('${p.img}')">Zoom Photo</button>
+        <button class="btn ghost" onclick="quickPopup.style.display='none'">Close</button>
+      </div>
+    </div>`;
+  quickPopup.style.display="flex";
+}
+
+function addRecent(p){
+  recentViewed = recentViewed.filter(x=>x.name!==p.name);
+  recentViewed.unshift(p);
+  recentViewed = recentViewed.slice(0,8);
+  localStorage.setItem("recentViewed", JSON.stringify(recentViewed));
+  renderRecent();
+}
+function renderRecent(){
+  if(!recentViewed.length){recentBox.innerHTML="View products to see them here.";return}
+  recentBox.innerHTML = recentViewed.map(p=>`
+    <div class="recent-card"><img src="${p.img}"><div>${p.name}</div><small>₹${p.price}</small></div>
+  `).join("");
+}
+
+function applyWishlistHearts(){
+  document.querySelectorAll(".wishlist").forEach(btn=>{
+    if(wishlist.includes(btn.dataset.name)) btn.innerText="♥";
+  });
+}
+
+function spinWheel(){
+  const coupons=["POOKIE10","CUTE15","YARN5","FREESHIP","GIFT20","LUCKY12"];
+  const c=coupons[Math.floor(Math.random()*coupons.length)];
+  couponWheel.style.transform = `rotate(${1440 + Math.floor(Math.random()*720)}deg)`;
+  setTimeout(()=>{
+    wheelCoupon.innerText = c;
+    coupon.value = c === "FREESHIP" ? "" : c;
+    showPop("Coupon Won 🎉","Your coupon is "+c+". Use it during checkout!");
+    updateCart();
+  },4100);
+}
+
+function trackOrder(){
+  const val = trackInput.value.trim();
+  if(!val){alert("Enter Order ID or phone number");return}
+  const steps=[t1,t2,t3,t4,t5];
+  steps.forEach(s=>s.classList.remove("active"));
+  let level = Math.min(5, Math.max(1, (val.length % 5)+1));
+  for(let i=0;i<level;i++) steps[i].classList.add("active");
+  trackResult.innerText = "Status found: " + steps[level-1].innerText;
+}
+
+function toggleMusic(){
+  showPop("Music Feature 🎵","Add your own soft music file URL inside the audio source to enable background music.");
+}
+
+function makeSparkle(x,y,icon="✨"){
+  let s=document.createElement("span");
+  s.className="sparkle";
+  s.innerText=icon;
+  s.style.left=x+"px";
+  s.style.top=y+"px";
+  document.body.appendChild(s);
+  setTimeout(()=>s.remove(),750);
+}
+document.addEventListener("touchmove", function(e){
+  const t=e.touches[0];
+  makeSparkle(t.clientX,t.clientY,Math.random()>.5?"✨":"🦋");
+},{passive:true});
+document.addEventListener("touchstart", function(e){
+  const t=e.touches[0];
+  makeSparkle(t.clientX,t.clientY,"💗");
+},{passive:true});
+
+renderProducts();renderReviews();loadMoreGallery(36);updateEstimate();renderRecent();applyWishlistHearts();
 if("serviceWorker" in navigator){navigator.serviceWorker.register("sw.js").catch(()=>{})}
 </script>
 </body>
