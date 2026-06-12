@@ -33,13 +33,76 @@ section{padding:62px 7%;position:relative;z-index:2}.title{text-align:center;fon
 .popup,.lightbox{position:fixed;inset:0;background:rgba(68,32,55,.52);display:none;align-items:center;justify-content:center;z-index:200;padding:20px}.popup-box{max-width:620px;background:#fff6fb;border-radius:30px;padding:28px;text-align:center;box-shadow:0 20px 60px rgba(0,0,0,.22);color:#5d3045}.lightbox img{max-width:92vw;max-height:88vh;border-radius:24px}.sparkle{position:fixed;pointer-events:none;z-index:999;animation:pop .75s forwards}@keyframes pop{to{transform:translateY(-24px) scale(0);opacity:0}}
 footer{padding:38px 7%;text-align:center;background:rgba(255,214,234,.86);font-weight:900}
 @media(max-width:850px){nav{display:none}.menu{display:block}h1{font-size:42px}.hero-card{padding:40px 22px}section{padding:52px 5%}.love-note{display:none}}
+
+.loader{
+  position:fixed;
+  inset:0;
+  background:#fff6fb;
+  z-index:9999;
+  display:flex;
+  align-items:center;
+  justify-content:center;
+  flex-direction:column;
+  transition:.6s;
+}
+.loader.hide{
+  opacity:0;
+  pointer-events:none;
+}
+.yarn{
+  font-size:64px;
+  animation:spin 1.2s linear infinite;
+}
+@keyframes spin{
+  to{transform:rotate(360deg)}
+}
+.cart-badge{
+  position:absolute;
+  top:-8px;
+  right:-8px;
+  background:#e94f91;
+  color:white;
+  min-width:22px;
+  height:22px;
+  padding:0 6px;
+  border-radius:999px;
+  display:grid;
+  place-items:center;
+  font-size:12px;
+  font-weight:900;
+  border:2px solid white;
+}
+.cart-nav{
+  position:relative;
+  display:inline-block;
+}
+.floating-cart{
+  position:fixed;
+  right:22px;
+  bottom:145px;
+  z-index:75;
+  background:#fff;
+  color:#e94f91;
+  text-decoration:none;
+  border-radius:999px;
+  padding:13px 18px;
+  font-weight:900;
+  box-shadow:0 12px 30px #0002;
+  border:1px solid #ffc1dd;
+}
+
 </style>
 </head>
 <body>
+<div class="loader" id="loader">
+  <div class="yarn">🧶</div>
+  <h2 style="font-family:Pacifico;color:#e94f91">Loading Pookie Magic...</h2>
+</div>
 <div class="float"><span>🌸</span><span>🦋</span><span>💗</span><span>🎀</span><span>✨</span><span>🧶</span></div>
-<header><div class="logo">Pookie Crochet</div><nav><a href="#shop">Shop</a><a href="#spin">Coupon</a><a href="#tracker">Track</a><a href="#reviews">Reviews</a><a href="#adminLoginBox">Admin</a></nav><div class="menu" onclick="toggleMenu()">☰</div></header>
+<header><div class="logo">Pookie Crochet</div><nav><a href="#shop">Shop</a><a href="#spin">Coupon</a><a href="#tracker">Track</a><a href="#reviews">Reviews</a><a href="#adminLoginBox">Admin</a><a href="#cart" class="cart-nav">Cart <span class="cart-badge" id="cartCountNav">0</span></a></nav><div class="menu" onclick="toggleMenu()">☰</div></header>
 <div class="mobile-nav" id="mobileNav"><a href="#shop">Shop</a><a href="#spin">Coupon</a><a href="#tracker">Track</a><a href="#reviews">Reviews</a><a href="#adminLoginBox">Admin</a></div>
-<a class="whatsapp" href="https://wa.me/917060105010" target="_blank">WhatsApp 💬</a><div class="love-note" id="loveNote">💗 Every stitch is made with love.</div>
+<a class="whatsapp" href="https://wa.me/917060105010" target="_blank">WhatsApp 💬</a>
+<a href="#cart" class="floating-cart">🛒 Cart <span class="cart-badge" id="cartCount">0</span></a><div class="love-note" id="loveNote">💗 Every stitch is made with love.</div>
 
 <section class="hero"><div class="hero-card"><div class="tag">🎀 Handmade Crochet Keychains & Charms</div><h1>Soft, Cute & Handmade With Love</h1><p>Premium crochet keychains, charms, plushies and custom gifts made with dreamy pookie aesthetics.</p><a href="#shop" class="btn">Shop Collection</a><a href="#custom" class="btn ghost">Custom Order</a></div></section>
 
@@ -79,7 +142,13 @@ function saveAll(){localStorage.setItem("products",JSON.stringify(products));loc
 function adminLogin(){const provider=new firebase.auth.GoogleAuthProvider();auth.signInWithPopup(provider).catch(e=>alert(e.message))}function adminLogout(){auth.signOut()}function isAdminAllowed(){const u=auth.currentUser;if(!u||u.email!==ADMIN_EMAIL){alert("Only admin can do this.");return false}return true}function checkAdmin(u){admin.style.display=(u&&u.email===ADMIN_EMAIL)?"block":"none";adminStatus.innerText=u?(u.email===ADMIN_EMAIL?"Admin logged in: "+u.email:"Logged in but not admin: "+u.email):"Not logged in"}auth.onAuthStateChanged(checkAdmin);
 function renderProducts(list=products){productsBox=document.getElementById("products");if(!list.length){productsBox.innerHTML="<h3>No products found.</h3>";return}productsBox.innerHTML=list.map((p,i)=>`<div class="card"><span class="badge">${p.status==="Out of Stock"?"Out of Stock":"Only "+p.stock+" left"}</span><button class="wishlist" onclick="this.innerText=this.innerText==='♡'?'♥':'♡'">♡</button><img src="${p.img}" onclick="openImg('${p.img}')"><h3>${p.name}</h3><p>${p.desc}</p><div class="price">₹${p.price}<span class="old">₹${p.old}</span></div><button class="btn" ${p.status==="Out of Stock"?"disabled":""} onclick="addToCart('${p.name}',${p.price})">${p.status==="Out of Stock"?"Sold Out":"Add to Cart"}</button></div>`).join("");renderAdminList();renderGallery();}
 function applyFilters(){let q=search.value.toLowerCase();let arr=products.filter(p=>(currentCat==="all"||p.cat===currentCat)&&p.name.toLowerCase().includes(q));if(sort.value==="low")arr.sort((a,b)=>a.price-b.price);if(sort.value==="high")arr.sort((a,b)=>b.price-a.price);renderProducts(arr)}function setCat(cat,el){currentCat=cat;document.querySelectorAll(".chip").forEach(c=>c.classList.remove("active"));el.classList.add("active");applyFilters()}
-function addToCart(name,price){cart.push({name,price});total+=price;updateCart();showPop("Added to Cart 🎉",name+" added successfully!")}function updateCart(){let code=coupon.value.trim().toUpperCase();let cp=coupons.find(c=>c.code===code);let discount=cp?Math.round(total*(cp.discount/100)):0;let final=total-discount;cartItems.innerHTML=cart.length?cart.map((i,n)=>`<div class="cart-row"><span>🎀 ${i.name}</span><span>₹${i.price} <button onclick="removeItem(${n})">Remove</button></span></div>`).join(""):"No items added yet.";document.getElementById("total").innerText=final}coupon.addEventListener("input",updateCart);function removeItem(i){total-=cart[i].price;cart.splice(i,1);updateCart()}
+function addToCart(name,price){cart.push({name,price});total+=price;updateCart();showPop("Added to Cart 🎉",name+" added successfully!")}function updateCart(){let code=coupon.value.trim().toUpperCase();let cp=coupons.find(c=>c.code===code);let discount=cp?Math.round(total*(cp.discount/100)):0;let final=total-discount;cartItems.innerHTML=cart.length?cart.map((i,n)=>`<div class="cart-row"><span>🎀 ${i.name}</span><span>₹${i.price} <button onclick="removeItem(${n})">Remove</button></span></div>`).join(""):"No items added yet.";document.getElementById("total").innerText=final;
+  const cartNumber = cart.length;
+  const c1 = document.getElementById("cartCount");
+  const c2 = document.getElementById("cartCountNav");
+  if(c1) c1.innerText = cartNumber;
+  if(c2) c2.innerText = cartNumber;
+}coupon.addEventListener("input",updateCart);function removeItem(i){total-=cart[i].price;cart.splice(i,1);updateCart()}
 function placeOrder(){if(!cart.length)return alert("Please add product first");let id="PC"+Date.now().toString().slice(-6);let order={id,name:customerName.value||"Customer",phone:customerPhone.value||"",place:customerPlace.value||"",items:cart,total:document.getElementById("total").innerText,status:"Order Received",date:new Date().toLocaleString()};orders.unshift(order);saveAll();renderOrders();let msg=`Hi, I want to order:%0AOrder ID: ${id}%0AName: ${order.name}%0APhone: ${order.phone}%0ALocation: ${order.place}%0A%0A`;cart.forEach(i=>msg+=`${i.name} - ₹${i.price}%0A`);msg+=`%0ATotal: ₹${order.total}`;window.open(`https://wa.me/${phone}?text=${msg}`,"_blank");showPop("Order Saved 📦","Order ID: "+id)}
 function customOrder(){let msg=`Hi, I want custom crochet order:%0AType: ${type.value}%0AColor: ${customColor.value}%0AQty: ${customQty.value}%0ANote: ${note.value}%0AI will send reference photo.`;window.open(`https://wa.me/${phone}?text=${encodeURIComponent(msg)}`,"_blank")}function previewPhotos(){preview.innerHTML="";[...customPhotos.files].forEach(f=>{let im=document.createElement("img");im.src=URL.createObjectURL(f);preview.appendChild(im)})}
 function adminPhotoPreview(){let f=adminPhotoFile.files[0];if(!f)return;let r=new FileReader();r.onload=e=>{adminImageData=e.target.result;adminPreview.innerHTML=`<img src="${adminImageData}">`};r.readAsDataURL(f)}function saveProduct(){if(!isAdminAllowed())return;if(!adminName.value||!adminPrice.value)return alert("Enter name and price");let obj={name:adminName.value,price:+adminPrice.value,old:+adminOld.value||(+adminPrice.value+100),stock:+adminStock.value||0,cat:adminCat.value,status:adminStatusProduct.value,img:adminImageData||adminImg.value||"images/product-01.jpeg",desc:adminDesc.value||"Cute handmade crochet product."};let idx=editIndex.value;if(idx==="")products.unshift(obj);else products[idx]=obj;saveAll();renderProducts();clearProductForm();showPop("Saved","Product saved successfully.")}
