@@ -1,0 +1,293 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Pookie Crochet Store</title>
+
+  <link href="https://fonts.googleapis.com/css2?family=Pacifico&family=Poppins:wght@400;500;600;700&display=swap" rel="stylesheet">
+
+  <style>
+    * {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+      font-family: 'Poppins', sans-serif;
+    }
+
+    body {
+      background: #fff7fb;
+      color: #4b2c3b;
+    }
+
+    header {
+      background: linear-gradient(135deg, #ffd6e8, #fff0b8);
+      padding: 25px 8%;
+      text-align: center;
+      border-bottom-left-radius: 40px;
+      border-bottom-right-radius: 40px;
+    }
+
+    header h1 {
+      font-family: 'Pacifico', cursive;
+      font-size: 42px;
+      color: #d63384;
+    }
+
+    header p {
+      margin-top: 8px;
+      font-size: 16px;
+    }
+
+    .hero {
+      padding: 50px 8%;
+      text-align: center;
+    }
+
+    .hero h2 {
+      font-size: 34px;
+      color: #c2185b;
+    }
+
+    .hero p {
+      margin: 15px auto;
+      max-width: 650px;
+      line-height: 1.7;
+    }
+
+    .btn {
+      display: inline-block;
+      margin-top: 20px;
+      padding: 12px 28px;
+      background: #ff69b4;
+      color: white;
+      border-radius: 30px;
+      text-decoration: none;
+      font-weight: 600;
+      border: none;
+      cursor: pointer;
+      transition: 0.3s;
+    }
+
+    .btn:hover {
+      background: #d63384;
+      transform: scale(1.05);
+    }
+
+    .section-title {
+      text-align: center;
+      font-size: 30px;
+      margin: 30px 0;
+      font-family: 'Pacifico', cursive;
+      color: #d63384;
+    }
+
+    .products {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(230px, 1fr));
+      gap: 25px;
+      padding: 20px 8% 50px;
+    }
+
+    .card {
+      background: white;
+      border-radius: 25px;
+      padding: 18px;
+      box-shadow: 0 8px 25px rgba(214, 51, 132, 0.15);
+      text-align: center;
+      transition: 0.3s;
+    }
+
+    .card:hover {
+      transform: translateY(-8px);
+    }
+
+    .card img {
+      width: 100%;
+      height: 230px;
+      object-fit: cover;
+      border-radius: 20px;
+      background: #ffe6f1;
+    }
+
+    .card h3 {
+      margin: 15px 0 5px;
+      color: #c2185b;
+    }
+
+    .price {
+      font-weight: 700;
+      color: #6a1b4d;
+      margin: 8px 0;
+    }
+
+    .cart-box {
+      background: #fff0f6;
+      margin: 20px 8% 50px;
+      padding: 25px;
+      border-radius: 25px;
+      box-shadow: 0 6px 20px rgba(214, 51, 132, 0.12);
+    }
+
+    .cart-box h2 {
+      color: #c2185b;
+      margin-bottom: 15px;
+    }
+
+    #cartItems {
+      margin-bottom: 15px;
+      line-height: 1.8;
+    }
+
+    .gallery {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(180px, 1fr));
+      gap: 18px;
+      padding: 20px 8% 50px;
+    }
+
+    .gallery img {
+      width: 100%;
+      height: 220px;
+      object-fit: cover;
+      border-radius: 22px;
+      box-shadow: 0 6px 18px rgba(0,0,0,0.12);
+    }
+
+    footer {
+      text-align: center;
+      padding: 25px;
+      background: #ffd6e8;
+      color: #7b1b4d;
+      border-top-left-radius: 35px;
+      border-top-right-radius: 35px;
+    }
+
+    @media(max-width: 600px) {
+      header h1 {
+        font-size: 34px;
+      }
+
+      .hero h2 {
+        font-size: 27px;
+      }
+    }
+  </style>
+</head>
+
+<body>
+
+  <header>
+    <h1>Pookie Crochet</h1>
+    <p>Handmade with love, yarn and tiny cute magic 🧶✨</p>
+  </header>
+
+  <section class="hero">
+    <h2>Soft, Cute & Handmade Crochet Gifts</h2>
+    <p>
+      Welcome to our cozy little crochet world. Explore handmade flowers,
+      plushies, keychains, bags and custom gifts made specially with love.
+    </p>
+    <a href="#shop" class="btn">Shop Now</a>
+  </section>
+
+  <h2 class="section-title" id="shop">Our Crochet Collection</h2>
+
+  <section class="products">
+
+    <div class="card">
+      <img src="https://images.unsplash.com/photo-1618354691373-d851c5c3a990?auto=format&fit=crop&w=600&q=80">
+      <h3>Crochet Flower Bouquet</h3>
+      <p>Perfect handmade gift.</p>
+      <div class="price">₹499</div>
+      <button class="btn" onclick="addToCart('Crochet Flower Bouquet', 499)">Add to Cart</button>
+    </div>
+
+    <div class="card">
+      <img src="https://images.unsplash.com/photo-1606761568499-6d2451b23c66?auto=format&fit=crop&w=600&q=80">
+      <h3>Cute Crochet Plushie</h3>
+      <p>Soft and adorable.</p>
+      <div class="price">₹349</div>
+      <button class="btn" onclick="addToCart('Cute Crochet Plushie', 349)">Add to Cart</button>
+    </div>
+
+    <div class="card">
+      <img src="https://images.unsplash.com/photo-1584992236310-6edddc08acff?auto=format&fit=crop&w=600&q=80">
+      <h3>Crochet Keychain</h3>
+      <p>Mini cute accessory.</p>
+      <div class="price">₹149</div>
+      <button class="btn" onclick="addToCart('Crochet Keychain', 149)">Add to Cart</button>
+    </div>
+
+    <div class="card">
+      <img src="https://images.unsplash.com/photo-1528825871115-3581a5387919?auto=format&fit=crop&w=600&q=80">
+      <h3>Custom Crochet Gift</h3>
+      <p>Made on order.</p>
+      <div class="price">₹699</div>
+      <button class="btn" onclick="addToCart('Custom Crochet Gift', 699)">Add to Cart</button>
+    </div>
+
+  </section>
+
+  <section class="cart-box">
+    <h2>Your Cart 🛒</h2>
+    <div id="cartItems">No items added yet.</div>
+    <h3>Total: ₹<span id="total">0</span></h3>
+    <button class="btn" onclick="orderWhatsApp()">Order on WhatsApp</button>
+  </section>
+
+  <h2 class="section-title">Photo Gallery</h2>
+
+  <section class="gallery">
+    <img src="https://images.unsplash.com/photo-1618354691373-d851c5c3a990?auto=format&fit=crop&w=600&q=80">
+    <img src="https://images.unsplash.com/photo-1606761568499-6d2451b23c66?auto=format&fit=crop&w=600&q=80">
+    <img src="https://images.unsplash.com/photo-1584992236310-6edddc08acff?auto=format&fit=crop&w=600&q=80">
+    <img src="https://images.unsplash.com/photo-1528825871115-3581a5387919?auto=format&fit=crop&w=600&q=80">
+  </section>
+
+  <footer>
+    <p>Made with love for handmade crochet dreams 🧶💕</p>
+    <p>Instagram: @yourpage | WhatsApp: 9876543210</p>
+  </footer>
+
+  <script>
+    let cart = [];
+    let total = 0;
+
+    function addToCart(name, price) {
+      cart.push({ name, price });
+      total += price;
+      updateCart();
+    }
+
+    function updateCart() {
+      const cartItems = document.getElementById("cartItems");
+      const totalBox = document.getElementById("total");
+
+      if (cart.length === 0) {
+        cartItems.innerHTML = "No items added yet.";
+      } else {
+        cartItems.innerHTML = cart.map(item => `💕 ${item.name} - ₹${item.price}`).join("<br>");
+      }
+
+      totalBox.innerText = total;
+    }
+
+    function orderWhatsApp() {
+      if (cart.length === 0) {
+        alert("Please add something to cart first!");
+        return;
+      }
+
+      let message = "Hi, I want to order:%0A%0A";
+      cart.forEach(item => {
+        message += `${item.name} - ₹${item.price}%0A`;
+      });
+      message += `%0ATotal: ₹${total}`;
+
+      window.open(`https://wa.me/919876543210?text=${message}`, "_blank");
+    }
+  </script>
+
+</body>
+</html>
