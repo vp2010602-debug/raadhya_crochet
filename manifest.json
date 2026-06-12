@@ -1,0 +1,9 @@
+{
+  "name": "Pookie Crochet Boutique",
+  "short_name": "Pookie Crochet",
+  "start_url": "index.html",
+  "display": "standalone",
+  "background_color": "#fff6fb",
+  "theme_color": "#ffd6ea",
+  "icons": []
+}
